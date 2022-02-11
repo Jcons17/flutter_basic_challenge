@@ -7,8 +7,11 @@ part 'homepage_bloc.freezed.dart';
 
 class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
   HomepageBloc() : super(HomepageState.initial()) {
-    on<HomepageEvent>((event, emit) {
-      // TODO: implement event handler
+    on<_Add>((event, emit) {
+      emit(HomepageState(counter: state.counter + 1));
+    });
+    on<_Substract>((event, emit) {
+      emit(HomepageState(counter: state.counter - 1));
     });
   }
 
