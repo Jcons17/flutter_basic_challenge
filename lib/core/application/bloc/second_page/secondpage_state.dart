@@ -13,4 +13,10 @@ class SecondpageState with _$SecondpageState {
         errored: false,
         loading: false,
       );
+
+  factory SecondpageState.loading() => const SecondpageState(
+        employees: [],
+        errored: false,
+        loading: true,
+      );
 }

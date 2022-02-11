@@ -1,13 +1,38 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 import '../../domain/entities/employee.dart';
 import '../../domain/repositories/repositories.dart';
+import '../models/employee_model.dart';
 
 class EmployeeRepositoryImpl implements EmployeeRepository {
   /// Should get employees from
-  /// https://dummy.restapiexample.com/api/v1/employees
+  static const url = "https://dummy.restapiexample.com/api/v1/employees";
   @override
-  Future<List<Employee>> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
+  Future<List<Employee>> getAll() async {
+    //await Future.delayed(Duration(seconds: 4));
+
+    List<Employee> list = [];
+
+    http.Response response;
+
+    response = await http.get(Uri.parse(url), headers: {});
+
+    print(response.statusCode);
+    if (response.statusCode != 200) return [];
+
+    final jsonResponse = jsonDecode(response.body);
+    final statusResponse = jsonResponse["status"];
+    final bodyResponse = jsonResponse["data"] as List;
+
+    if (statusResponse == "success") {
+      list = bodyResponse.map((emp) => EmployeeModel.fromMap(emp)).toList();
+    } else {
+      //this will be generate an error to proc
+      list = [];
+    }
+    return list;
   }
 }
 
